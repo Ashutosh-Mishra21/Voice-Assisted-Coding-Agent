@@ -21,4 +21,10 @@ DO NOT EXPORT:
 When unsure, keep imports local and avoid re-exporting.
 """
 
-__all__: list[str] = []
+from .context_builder import ContextBuilder
+from .context_window import ContextWindow
+
+__all__ = [
+    "ContextBuilder",
+    "ContextWindow",
+]

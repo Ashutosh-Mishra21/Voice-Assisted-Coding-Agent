@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     PORT: int = 8000
 
     EMBEDDING_MODEL: str = "BAAI/bge-small-en-v1.5"
+    EMBEDDING_BATCH_SIZE: int = 64
 
     RERANK_MODEL: str = "BAAI/bge-reranker-base"
 

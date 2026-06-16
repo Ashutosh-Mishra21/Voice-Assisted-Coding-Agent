@@ -1,6 +1,9 @@
 import uuid
 
+from sympy.core import symbol
+
 from backend.models.code_chunk import CodeChunk
+import hashlib
 
 
 class ChunkBuilder:
@@ -17,14 +20,19 @@ class ChunkBuilder:
         lines = content.splitlines()
 
         for symbol in symbols:
-
             start = symbol["start_line"]
             end = symbol["end_line"]
 
             chunk_text = "\n".join(lines[start - 1 : end])
 
+            stable_chunk_id = hashlib.md5(
+                (
+                    file_path + symbol["type"] + symbol["name"] + str(start) + str(end)
+                ).encode()
+            ).hexdigest()
+
             chunk = CodeChunk(
-                chunk_id=str(uuid.uuid4()),
+                chunk_id=stable_chunk_id,
                 file_path=file_path,
                 language="python",
                 chunk_type=symbol["type"],
