@@ -21,4 +21,8 @@ DO NOT EXPORT:
 When unsure, keep imports local and avoid re-exporting.
 """
 
-__all__: list[str] = []
+from .pipeline import AgentPipeline
+
+__all__ = [
+    "AgentPipeline",
+]

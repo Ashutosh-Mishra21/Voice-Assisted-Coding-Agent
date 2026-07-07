@@ -21,6 +21,10 @@ class Settings(BaseSettings):
 
     DEFAULT_TOP_K: int = 10
 
+    OLLAMA_MODEL: str = "qwen3:8b"
+
+    OLLAMA_HOST: str = "http://localhost:11434"
+
     QDRANT_COLLECTION: str = "repository_chunks"
 
     class Config:

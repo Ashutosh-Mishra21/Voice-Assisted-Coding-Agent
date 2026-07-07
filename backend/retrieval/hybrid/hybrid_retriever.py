@@ -9,12 +9,12 @@ class HybridRetriever:
 
     def __init__(
         self,
-        repo_name: str,
+        repository_name: str,
     ):
 
         self.semantic = SemanticRetriever()
 
-        self.bm25 = BM25Retriever(repo_name)
+        self.bm25 = BM25Retriever(repository_name)
 
         self.fusion = ReciprocalRankFusion()
 
