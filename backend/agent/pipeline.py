@@ -31,13 +31,15 @@ class AgentPipeline:
     def __init__(
         self,
         repository_name: str,
+        registry: ModelRegistry,
+        memory: MemoryManager,
     ):
 
         self.repository_name = repository_name
 
-        self.memory = MemoryManager()
+        self.memory = memory
 
-        self.registry = ModelRegistry()
+        self.registry = registry
 
         self.retriever = HybridRetriever(repository_name)
 
