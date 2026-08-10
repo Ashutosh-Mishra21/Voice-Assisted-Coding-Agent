@@ -7,6 +7,8 @@ class ProviderResult(BaseModel):
 
     model_name: str
 
+    provider_name: str
+
     prompt_size: int
 
     completion_size: int

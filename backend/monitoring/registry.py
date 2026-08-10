@@ -3,7 +3,8 @@ from backend.monitoring.metrics import (
     CONTEXT_DURATION,
     CONTEXT_SIZE_BYTES,
     GENERATION_DURATION,
-    MEMORY_DURATION,
+    MEMORY_READ_DURATION,
+    MEMORY_WRITE_DURATION,
     PIPELINE_DURATION,
     PROMPT_DURATION,
     PROMPT_SIZE_BYTES,
@@ -51,9 +52,12 @@ class Metrics:
         return PIPELINE_DURATION.time()
 
     @staticmethod
-    def memory_timer():
+    def memory_read_timer():
+        return MEMORY_READ_DURATION.time()
 
-        return MEMORY_DURATION.time()
+    @staticmethod
+    def memory_write_timer():
+        return MEMORY_WRITE_DURATION.time()
 
     @staticmethod
     def retrieval_timer():
@@ -76,9 +80,9 @@ class Metrics:
         return PROMPT_DURATION.time()
 
     @staticmethod
-    def generation_timer():
+    def generation_timer(provider: str, model: str):
 
-        return GENERATION_DURATION.time()
+        return GENERATION_DURATION.labels(provider=provider, model=model).time()
 
     # ==================================================
     # Sizes

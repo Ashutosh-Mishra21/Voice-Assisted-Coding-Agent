@@ -30,9 +30,14 @@ PIPELINE_DURATION = Histogram(
     "Entire agent pipeline execution time",
 )
 
-MEMORY_DURATION = Histogram(
-    "memory_duration_seconds",
-    "Conversation memory latency",
+MEMORY_READ_DURATION = Histogram(
+    "memory_read_duration_seconds",
+    "Conversation history retrieval latency",
+)
+
+MEMORY_WRITE_DURATION = Histogram(
+    "memory_write_duration_seconds",
+    "Conversation history update latency",
 )
 
 RETRIEVAL_DURATION = Histogram(
@@ -58,6 +63,7 @@ PROMPT_DURATION = Histogram(
 GENERATION_DURATION = Histogram(
     "generation_duration_seconds",
     "LLM generation latency",
+    ["provider", "model"],
 )
 
 # ==========================================================

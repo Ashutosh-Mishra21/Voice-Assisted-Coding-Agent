@@ -1,6 +1,8 @@
 from threading import Lock
 
-from backend.retrieval.semantic.embedder import SemanticEmbedder
+from backend.config.settings import settings
+
+from backend.retrieval.semantic.embedder import Embedder
 from backend.retrieval.rerank.reranker import CrossEncoderReranker
 
 from backend.generation.providers.ollama_provider import OllamaProvider
@@ -16,13 +18,9 @@ class ModelRegistry:
     def __new__(cls):
 
         if cls._instance is None:
-
             with cls._lock:
-
                 if cls._instance is None:
-
                     cls._instance = super().__new__(cls)
-
                     cls._instance._initialize()
 
         return cls._instance
@@ -33,12 +31,20 @@ class ModelRegistry:
         self._reranker = None
         self._providers = {}
 
+    # =====================================================
+    # Embedder
+    # =====================================================
+
     def get_embedder(self):
 
         if self._embedder is None:
-            self._embedder = SemanticEmbedder()
+            self._embedder = Embedder()
 
         return self._embedder
+
+    # =====================================================
+    # Reranker
+    # =====================================================
 
     def get_reranker(self):
 
@@ -47,31 +53,60 @@ class ModelRegistry:
 
         return self._reranker
 
+    # =====================================================
+    # Providers
+    # =====================================================
+
     def get_provider(
         self,
-        provider: str = "ollama",
+        provider_name: str = None,
     ):
-        provider = provider.lower()
 
-        if provider in self._providers:
+        provider_name = (provider_name or settings.DEFAULT_PROVIDER).lower()
 
-            return self._providers[provider]
+        if provider_name in self._providers:
+            return self._providers[provider_name]
 
-        if provider == "ollama":
-            instance = OllamaProvider()
+        # -------------------------------
+        # Ollama
+        # -------------------------------
 
-        elif provider == "openai":
-            instance = OpenAIProvider()
+        if provider_name == "ollama":
+            instance = OllamaProvider(
+                model=settings.OLLAMA_MODEL,
+                host=settings.OLLAMA_HOST,
+            )
 
-        elif provider == "openrouter":
-            instance = OpenRouterProvider()
+        # -------------------------------
+        # OpenAI
+        # -------------------------------
+
+        elif provider_name == "openai":
+            instance = OpenAIProvider(
+                api_key=settings.OPENAI_API_KEY,
+                model=settings.OPENAI_MODEL,
+            )
+
+        # -------------------------------
+        # OpenRouter
+        # -------------------------------
+
+        elif provider_name == "openrouter":
+            instance = OpenRouterProvider(
+                api_key=settings.OPENROUTER_API_KEY,
+                model=settings.OPENROUTER_MODEL,
+            )
 
         else:
-            raise ValueError(f"Unsupported provider: {provider}")
+            raise ValueError(f"Unsupported provider: {provider_name}")
 
-        self._providers[provider] = instance
+        self._providers[provider_name] = instance
 
         return instance
+
+    # =====================================================
+    # Cleanup
+    # =====================================================
 
     def unload(self):
 
