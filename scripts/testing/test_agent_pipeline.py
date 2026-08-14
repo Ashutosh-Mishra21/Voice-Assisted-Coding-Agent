@@ -5,7 +5,7 @@ from backend.agent.pipeline import (
 from backend.agent.agent_request import (
     AgentRequest,
 )
-
+ 
 from backend.agent.memory.memory_manager import (
     MemoryManager,
 )
@@ -24,7 +24,7 @@ def main():
     registry = ModelRegistry()
 
     memory = MemoryManager()
-
+    
     # --------------------------------------------------
     # Agent Pipeline
     # --------------------------------------------------
