@@ -43,7 +43,14 @@ class RepositoryIndexer:
 
             tree, content = parser.parse_file(str(file))
 
-            symbols = self.extractor.extract(tree.root_node)
+            symbols = (
+                self.extractor.extract(
+                    tree.root_node,
+                    language=parser.language_name,
+                )
+                if tree is not None
+                else []
+            )
 
             total_functions += sum(1 for s in symbols if s["type"] == "function")
 

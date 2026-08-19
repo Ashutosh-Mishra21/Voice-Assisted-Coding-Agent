@@ -3,7 +3,18 @@ from pathlib import Path
 
 class RepositoryScanner:
 
-    SUPPORTED_EXTENSIONS = {".py"}
+    SUPPORTED_EXTENSIONS = {
+        ".py",
+        ".java",
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx",
+        ".html",
+        ".css",
+        ".scss",
+        ".md",
+    }
 
     def scan(self, repository_path: str):
 
@@ -12,7 +23,6 @@ class RepositoryScanner:
         files = []
 
         for extension in self.SUPPORTED_EXTENSIONS:
-
             files.extend(repository.rglob(f"*{extension}"))
 
         return sorted(files)
